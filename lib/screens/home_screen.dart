@@ -18,8 +18,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Query(
         options: QueryOptions(document: gql(getCountriesQuery)),
         builder: (result, {fetchMore, refetch}) {
-          if (result.isLoading) return const Center(child: CircularProgressIndicator());
-          if (result.hasException) return Center(child: Text(result.exception.toString()));
+          if (result.isLoading)
+            return const Center(child: CircularProgressIndicator());
+          if (result.hasException)
+            return Center(child: Text(result.exception.toString()));
 
           final countries = result.data?['countries'] ?? [];
 
@@ -27,10 +29,16 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: countries.length,
             itemBuilder: (context, index) {
               final country = countries[index];
-              return ListTile(
-                leading: Text(country['emoji']),
-                title: Text(country['name']),
-                subtitle: Text("Code: ${country['code']}"),
+              return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    child: Text("${country['emoji']}"),
+                  ),
+                  title: Text(country['name']),
+                  subtitle: Text("Code: ${country['code']}"),
+                ),
               );
             },
           );
